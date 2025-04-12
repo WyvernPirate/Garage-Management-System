@@ -1,107 +1,73 @@
-# TutorOnDemand Android App
+# Car Repair Garage Management System
 
-This Android application, TutorOnDemand, facilitates the scheduling of tutorial sessions. Instructors can post tutorial topics, and students can express their interest by selecting a topic and a preferred date/time.
+## Overview
+
+This C++ application is a Car Repair Garage Management System designed to manage car repairs, track parts inventory, handle orders, generate invoices, and process deliveries. The system utilizes object-oriented programming (OOP) principles for a modular, maintainable, and efficient design.
 
 ## Features
 
-* **Topic Listing:** Displays a list of tutorial topics retrieved from Firebase Realtime Database.
-* **Topic Details:** Allows students to view topic details, enter their name, and select a preferred date and time.
-* **"Join" Functionality:** Enables students to "join" a topic, which increments the student count in Firebase.
-* **Options Menu:** Includes an options menu with "Add Topic," "Settings," and "Refresh News" actions.
-* **Settings:** Provides a settings screen (SettingsFragment) where users can toggle notifications.
-* **News Feed:** Displays tutorial updates in a news feed format.
-* **Firebase Integration:** Uses Firebase Realtime Database for real-time data storage and retrieval.
-* **SQLite Caching:** Implements local caching of topics using SQLite for offline functionality.
-* **SharedPreferences:** Persists user settings, such as notification preferences.
-* **User Interface:** Employs Fragments, RecyclerView, CardView, DatePicker, TimePicker, and custom styles for an interactive and polished user experience.
+* **Part Management:**
+    * Stores part details (ID, name, quantity, price).
+    * Provides methods to access and update part information.
+* **Stock and Order Management:**
+    * Manages part inventory.
+    * Allows adding new parts to stock.
+    * Enables searching for parts by ID or name.
+    * Updates stock quantities.
+    * Generates reports for parts that need reordering.
+    * Saves orders to a file (`orders.txt`).
+* **Repair and Invoice System:**
+    * Processes car repairs by entering parts used.
+    * Validates entered parts against stock.
+    * Calculates the total repair cost.
+    * Generates invoices and saves them to files.
+* **Delivery Handling:**
+    * Processes deliveries of new parts.
+    * Validates delivered parts against orders in `orders.txt`.
+    * Updates stock quantities based on deliveries.
+    * Removes delivered orders from `orders.txt`.
 
-## Technologies Used
+## Program Structure
 
-* Android Studio
-* Java
-* Firebase Realtime Database
-* SQLite
-* SharedPreferences
-* Fragments
-* RecyclerView
-* CardView
-* DatePicker
-* TimePicker
-* AlertDialog
+The system is organized into the following classes and files:
 
-## Setup
+* `Part` Class (`Part.h`, `Part.cpp`): Represents a part in the garage's inventory.
+* `GarageManager` Class (`GarageManager.h`, `GarageManager.cpp`): Manages part inventory, orders, repairs, and deliveries.
+* `Main Program` (`main.cpp`): Provides a user interface to interact with the system.
 
-1.  **Prerequisites:**
-    * Android Studio installed with an emulator configured (e.g., Pixel 6, API 34).
-    * A Google account for Firebase setup.
-    * Basic knowledge of Android development (activities, layouts, Java/Kotlin).
+## Usage
 
-2.  **Firebase Setup:**
-    * Create a Firebase project in the Firebase Console ([https://console.firebase.google.com/](https://console.firebase.google.com/)).
-    * Add your Android app to the Firebase project.
-    * Download the `google-services.json` file and place it in your Android project's `app/` directory.
-    * Add the necessary Firebase dependencies to your `build.gradle` (Module: app) file.
+1.  **Compilation:**
 
-3.  **Project Setup in Android Studio:**
-    * Clone the repository into Android Studio.
-    * Build and run the application on an emulator or a physical device.
+    * Ensure you have a C++ compiler (e.g., g++).
+    * Compile the source files:
 
-## Code Structure
+        \`\`\`bash
+        g++ Part.cpp GarageManager.cpp main.cpp -o garage_system
+        \`\`\`
+2.  **Execution:**
 
-The project is structured as follows:
+    * Run the compiled executable:
 
-* **`MainActivity`**: The main activity of the application, which hosts the fragments.
-* **`activity_main.xml`**: Layout file for `MainActivity`, containing a `FrameLayout` to hold fragments.
-* **`TopicListFragment`**: Fragment displaying the list of tutorial topics and the news feed.
-* **`fragment_topic_list.xml`**: Layout file for `TopicListFragment`, containing a `RecyclerView` and a `TextView` for the news feed.
-* **`TopicAdapter`**: Adapter for the `RecyclerView` in `TopicListFragment`, responsible for displaying topic items.
-* **`item_topic.xml`**: Layout file for individual topic items in the `RecyclerView`, using `CardView`.
-* **`Topic`**: Data class representing a tutorial topic.
-* **`TopicDetailsFragment`**: Fragment displaying details of a selected topic and allowing students to join.
-* **`fragment_topic_details.xml`**: Layout file for `TopicDetailsFragment`, containing `TextView`s, `EditText`, `DatePicker`, `TimePicker`, and a `Button`.
-* **`SettingsFragment`**: Fragment for application settings, such as notification preferences.
-* **`fragment_settings.xml`**: Layout file for `SettingsFragment`, containing a `Switch` for toggling notifications.
-* **`topic_list_menu.xml`**: Menu resource file for the options menu in `TopicListFragment`.
-* **`dialog_add_topic.xml`**: Layout file for the "Add Topic" dialog.
+        \`\`\`bash
+        ./garage_system
+        \`\`\`
+3.  **Interaction:**
 
-## Functionality
+    * The program will display a menu with the following options:
 
-1.  **Topic List Fragment:**
-    * Displays a list of topics fetched from Firebase in a `RecyclerView`.
-    * Each topic is shown in a `CardView` with topic name, instructor, and a "Join" button.
-    * Includes a news feed section to display tutorial updates.
-    * Provides an options menu with "Add Topic," "Settings," and "Refresh News" options.
+        1.  Add Part
+        2.  Search Part
+        3.  Process Repair
+        4.  Process Delivery
+        5.  Generate Orders
+        0.  Exit
+    * Enter the number corresponding to the desired operation.
+    * Follow the prompts to enter the required information.
 
-2.  **Topic Details Fragment:**
-    * Displays the selected topic's details (name, instructor).
-    * Allows students to enter their name and select a preferred date and time using `DatePicker` and `TimePicker`.
-    * The "Join Topic" button increments the student count for the topic in Firebase.
+## Input/Output Files
 
-3.  **Options Menu:**
-    * **Add Topic:** Opens a dialog for instructors to add new tutorial topics.
-    * **Settings:** Navigates to the `SettingsFragment` to manage application settings.
-    * **Refresh News:** Refreshes the news feed with the latest updates from Firebase.
+The system uses the following files:
 
-4.  **Firebase Integration:**
-    * Real-time data storage and retrieval for topics and news feed.
-    * Data is structured to allow easy management of topics and associated information.
-
-5.  **SQLite Caching:**
-    * Local caching of topic data to enable offline access.
-    * Data synchronization when the device is online.
-
-6.  **SharedPreferences:**
-    * Stores user preferences, such as notification settings.
-
-## Enhancements
-
-* **UI/UX:** Improve the user interface with custom styles, themes, and drawables.
-* **Error Handling:** Implement robust error handling and user feedback mechanisms.
-* **Data Validation:** Add input validation to prevent invalid data entry.
-* **Advanced Features:** Consider adding features like user authentication, push notifications, and more detailed scheduling options.
-
-## Notes
-
-* This project provides a basic framework for the TutorOnDemand application.
-* Further development and refinement are encouraged to enhance functionality and user experience.
-* Remember to test thoroughly, especially Firebase connectivity and SQLite fallback.
+* `orders.txt`: Stores details of parts that have been ordered. The system reads from and writes to this file when processing deliveries and generating orders.
+* `invoice.txt`: The system will prompt for a filename and write the invoice details to the specified file.
