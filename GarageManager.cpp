@@ -37,7 +37,6 @@ void GarageManager::addPart() {
     cin >> quantity;
     clearCin();
     
-
     cout << "Enter Unit Price: ";
     cin >> price;
     clearCin();

@@ -1,1 +1,3 @@
+P101, Wheel, 2
+P102, Brake Pad, 8
 

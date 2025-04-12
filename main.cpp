@@ -1,7 +1,6 @@
 #include <iostream>
 #include <limits> 
 #include "GarageManager.cpp"
-
 using namespace std;
 
 int main() {
