@@ -1,5 +1,5 @@
 #include <iostream>
-#include <limits> // for numeric_limits
+#include <limits> 
 #include "GarageManager.cpp"
 
 using namespace std;
@@ -12,8 +12,9 @@ int main() {
         cout << "\nGarage Repair Management System\n";
         cout << "1. Add Part\n";
         cout << "2. Search Part\n";
-        cout << "3. Process Repair\n"; 
-        cout << "4. Generate Orders\n";
+        cout << "3. Process Repair\n";
+        cout << "4. Process Delivery\n"; 
+        cout << "5. Generate Orders\n";
         cout << "0. Exit\n";
         cout << "Enter your choice: ";
         cin >> choice;
@@ -27,29 +28,12 @@ int main() {
                 garage.searchPart();
                 break;
             case 3:
-                // Process Repair
-            {
-                string partID;
-                int quantityUsed;
-                cout << "--- Process Repair ---" << endl;
-
-                cout << "Enter 'done' for Part ID to finish entering parts." << endl;
-
-                while (true) {
-                    cout << "Enter Part ID: ";
-                    cin >> partID;
-                    if (partID == "done") {
-                        break;
-                    }
-                    cout << "Enter Quantity Used: ";
-                    cin >> quantityUsed;
-                    cin.ignore();
-
-                    garage.updateStock(partID, quantityUsed); // Update stock for each part used
-                }
-            }
-            break;
+                garage.processRepair();
+                break;
             case 4:
+                garage.processDelivery(); 
+                break;
+            case 5:
                 garage.generateOrders();
                 break;
             case 0:
