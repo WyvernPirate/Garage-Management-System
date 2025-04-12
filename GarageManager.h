@@ -1,12 +1,9 @@
 #ifndef GARAGEMANAGER_H
 #define GARAGEMANAGER_H
-
 #include <iostream>
 #include <vector>
 #include <string>
 #include "Part.h"
-
-using namespace std;
 
 class GarageManager {
 private:
@@ -21,11 +18,16 @@ public:
     void searchPart();
 
     // Update stock quantity
-    void updateStock(string partID, int quantityUsed);
-
+    void updateStock(std::string partID, int quantityUsed);
 
     // Generate orders report
     void generateOrders();
+
+    // Process a repair
+    void processRepair();
+
+    // Process delivery
+    void processDelivery();
 
     // function to find a part by ID
     int findPartIndex(std::string partID) const;
@@ -33,5 +35,4 @@ public:
     // function to find parts by name
     std::vector<int> findPartIndicesByName(std::string partName) const;
 };
-
 #endif
