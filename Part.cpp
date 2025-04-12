@@ -1,38 +1,31 @@
 #include "Part.h"
 #include <iostream>
-
 using namespace std;
-
-// Constructor implementation
+// Constructor 
 Part::Part(string id, string name, int quantity, double price)
     : partID(id), partName(name), quantityInStock(quantity), unitPrice(price) {}
 
-// Accessor methods (getters) implementation
+// getters 
 string Part::getPartID() const {
     return partID;
 }
-
 string Part::getPartName() const {
     return partName;
 }
-
 int Part::getQuantityInStock() const {
     return quantityInStock;
 }
-
 double Part::getUnitPrice() const {
     return unitPrice;
 }
 
-// Mutator methods (setters) implementation
+//setters
 void Part::setPartName(string name) {
     partName = name;
 }
-
 void Part::setQuantityInStock(int quantity) {
     quantityInStock = quantity;
 }
-
 void Part::setUnitPrice(double price) {
     unitPrice = price;
 }
