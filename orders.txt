@@ -1,3 +1,2 @@
-P101, Wheel, 2
-P102, Brake Pad, 8
-
+P01,Valve,8
+P01,Valve,8
