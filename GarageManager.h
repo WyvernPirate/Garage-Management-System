@@ -1,16 +1,14 @@
 #ifndef GARAGEMANAGER_H
 #define GARAGEMANAGER_H
-#include <iostream>
 #include <vector>
 #include <string>
 #include "Part.h"
+#include <iostream>
 using namespace std;
 
 class GarageManager {
 private:
-    //Vector to store objects
     vector<Part> stock;
-
 public:
     //Add a part to stock
     void addPart();
@@ -30,10 +28,11 @@ public:
     // Process delivery
     void processDelivery();
 
-    // function to find a part by ID
+    // method to find a part by ID
     int findPartIndex(string partID) const;
 
-    // function to find parts by name
+    // method to find parts by name
     std::vector<int> findPartIndicesByName(string partName) const;
 };
 #endif
+
