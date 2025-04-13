@@ -4,7 +4,8 @@ using namespace std;
 // Constructor 
 Part::Part(string id, string name, int quantity, double price)
     : partID(id), partName(name), quantityInStock(quantity), unitPrice(price) {}
-//setters
+//setter methods
+
 void Part::setName(string name) {
     partName = name;
 }
@@ -14,6 +15,7 @@ void Part::setQuantity(int quantity) {
 void Part::setPrice(double price) {
     unitPrice = price;
 }
+
 // getters 
 string Part::getID() const {
     return partID;
