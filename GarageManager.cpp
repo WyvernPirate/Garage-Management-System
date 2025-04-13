@@ -1,26 +1,25 @@
 #include "GarageManager.h"
-#include <iostream>
-#include <limits>
-#include <fstream>
 #include <string>
 #include <vector> 
 #include <iomanip> 
 #include <sstream> 
+#include <iostream>
+#include <limits>
+#include <fstream>
 #include <algorithm> 
-
 using namespace std;
+
 struct Order {
     std::string partName;
     int quantityOrdered;
     std::string partID;
 };
-
 // Function to clear the input buffer
 void clearCin() {
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 }
 
-//function to add a new Part
+//method to add a new Part
 void GarageManager::addPart() {
     string id, name;
     int quantity;
@@ -43,11 +42,10 @@ void GarageManager::addPart() {
     
     Part newPart(id, name, quantity, price);
     stock.push_back(newPart);
-
     cout << "Part added successfully!" << endl;
 }
 
-//function to search for a part
+//method to search for a part
 void GarageManager::searchPart() {
     cout << "Search by (1) ID or (2) Name? ";
     int choice;
@@ -87,17 +85,17 @@ void GarageManager::searchPart() {
     }
 }
 
-// function to update stock by ID
+// Method to update stock
 void GarageManager::updateStock(string partID, int quantityUsed) {
     int index = findPartIndex(partID);
     if (index != -1) {
-        int currentQuantity = stock[index].getQuantityInStock();
+        int currentQuantity = stock[index].getQuantity();
         if (currentQuantity >= quantityUsed) {
-            stock[index].setQuantityInStock(currentQuantity - quantityUsed);
+            stock[index].setQuantity(currentQuantity - quantityUsed);
             cout << "Stock updated. " << quantityUsed << " "
-                 << "removed from " << stock[index].getPartName() << endl;
+                 << "removed from " << stock[index].getName() << endl;
         } else {
-            cout << "Error: Not enough " << stock[index].getPartName()
+            cout << "Error: Not enough " << stock[index].getName()
                  << " in stock. Only " << currentQuantity << " available." << endl;
         }
     } else {
@@ -110,18 +108,18 @@ void GarageManager::generateOrders() {
 
     if (!ordersFile.is_open()) {
         cerr << "Error: Could not open orders file!" << endl;
-        return; // Exit the function if the file cannot be opened
+        return; 
     }
 
     cout << "Parts that need to be ordered (and saved to orders.txt):" << endl;
     for (const Part& part : stock) {
-        if (part.getQuantityInStock() < 10) { //Reorder if quantity is less than 10
-            cout << "Part ID: " << part.getPartID() << ", Part Name: " << part.getPartName()
-                 << ", Quantity in Stock: " << part.getQuantityInStock() << endl;
+        if (part.getQuantity() < 10) { //Reorder if quantity is less than 10
+            cout << "Part ID: " << part.getID() << ", Part Name: " << part.getName()
+                 << ", Quantity in Stock: " << part.getQuantity() << endl;
 
             // Save the order to the file
-            ordersFile << part.getPartID() << "," << part.getPartName() << ","
-                        << part.getQuantityInStock() << endl;
+            ordersFile << part.getID() << "," << part.getName() << ","
+                        << part.getQuantity() << endl;
         }
     }
     ordersFile.close(); // Close the file
@@ -161,9 +159,9 @@ void GarageManager::processRepair() {
         if (index == -1) {
             cout << "Error: Part with ID " << part.first << " not found." << endl;
             validRepair = false;
-        } else if (stock[index].getQuantityInStock() < part.second) {
-            cout << "Error: Not enough " << stock[index].getPartName()
-                 << " in stock. Only " << stock[index].getQuantityInStock()
+        } else if (stock[index].getQuantity() < part.second) {
+            cout << "Error: Not enough " << stock[index].getName()
+                 << " in stock. Only " << stock[index].getQuantity()
                  << " available." << endl;
             validRepair = false;
         }
@@ -171,17 +169,17 @@ void GarageManager::processRepair() {
 
     // Generate invoice and update stock if repair is valid
     if (validRepair) {
-        cout << "Enter the invoice filename (e.g., invoice.txt): ";
+        cout << "Enter the invoice filename (invoice.txt): ";
         cin >> invoiceFileName;
 
         ofstream invoiceFile(invoiceFileName); // Open file to write the invoice
 
         if (!invoiceFile.is_open()) {
             cerr << "Error: Could not open invoice file!" << endl;
-            return; // Exit the function if the file cannot be opened
+            return; 
         }
 
-        invoiceFile << "--- Invoice ---" << endl; // Write invoice header to file
+        invoiceFile << "--- Invoice ---" << endl; 
         invoiceFile << "-----------------------------------------" << endl;
         invoiceFile << left << setw(10) << "Quantity" << left << setw(20) << "Part Name"
                     << right << setw(10) << "Cost" << endl;
@@ -189,17 +187,17 @@ void GarageManager::processRepair() {
 
         for (const auto& part : partsUsed) {
             int index = findPartIndex(part.first);
-            double partCost = stock[index].getUnitPrice() * part.second;
+            double partCost = stock[index].getPrice() * part.second;
             totalCost += partCost; // Calculate total cost
 
             invoiceFile << left << setw(10) << part.second
-                        << left << setw(20) << stock[index].getPartName()
+                        << left << setw(20) << stock[index].getName()
                         << right << setw(10) << fixed << setprecision(2) << partCost << endl;
             updateStock(part.first, part.second); // Update stock
         }
 
         invoiceFile << "-----------------------------------------" << endl;
-        invoiceFile << right << setw(30) << "Total Cost: $" << fixed << setprecision(2) << totalCost << endl; // Write total cost
+        invoiceFile << right << setw(30) << "Total Cost: $" << fixed << setprecision(2) << totalCost << endl;
 
         invoiceFile.close(); // Close the invoice file
 
@@ -216,7 +214,6 @@ void GarageManager::processDelivery() {
     int quantityDelivered;
     bool validDelivery = true;
     vector<Order> orders; 
-
     cout << "Enter delivered parts (Enter 'done' for Part ID to finish):" << endl;
 
     while (true) {
@@ -232,7 +229,7 @@ void GarageManager::processDelivery() {
         deliveredParts.push_back(make_pair(partID, quantityDelivered));
     }
 
-    // 1. Read Orders from File
+    // Read Orders from File
     ifstream ordersFileIn("orders.txt");
     if (!ordersFileIn.is_open()) {
         cerr << "Error: Could not open orders.txt for reading!" << endl;
@@ -250,7 +247,7 @@ void GarageManager::processDelivery() {
     }
     ordersFileIn.close();
 
-    // 2. Validate Delivered Parts Against Orders
+    //Validate Delivered Parts Against Orders
     for (const auto& deliveredPart : deliveredParts) {
         bool found = false;
         for (const auto& order : orders) {
@@ -270,14 +267,14 @@ void GarageManager::processDelivery() {
         }
     }
 
-    // 3. Update Stock and Remove Orders
+    // Update Stock and Remove Orders
     if (validDelivery) {
         cout << "\n--- Delivery Report ---" << endl;
         for (const auto& deliveredPart : deliveredParts) {
             int index = findPartIndex(deliveredPart.first);
             if (index != -1) {
-                int currentQuantity = stock[index].getQuantityInStock();
-                stock[index].setQuantityInStock(currentQuantity + deliveredPart.second);
+                int currentQuantity = stock[index].getQuantity();
+                stock[index].setQuantity(currentQuantity + deliveredPart.second);
                 cout << "Updated stock for Part ID: " << deliveredPart.first
                      << ", Added: " << deliveredPart.second << endl;
             } else {
@@ -286,19 +283,19 @@ void GarageManager::processDelivery() {
             }
         }
         if (validDelivery) {
-            // 4. Remove Delivered Orders from the Vector
+            //Remove Delivered Orders 
             orders.erase(remove_if(orders.begin(), orders.end(),
                                   [&](const Order& order) {
                                       for (const auto& deliveredPart : deliveredParts) {
                                           if (order.partID == deliveredPart.first) {
-                                              return true; // Remove this order
+                                              return true;
                                           }
                                       }
-                                      return false; // Don't remove
+                                      return false; 
                                   }),
                         orders.end());
 
-            // 5. Write Remaining Orders Back to File
+            //Write Remaining Orders Back to File
             ofstream ordersFileOut("orders.txt");
             if (!ordersFileOut.is_open()) {
                 cerr << "Error: Could not open orders.txt for writing!" << endl;
@@ -322,7 +319,7 @@ void GarageManager::processDelivery() {
 
 int GarageManager::findPartIndex(string partID) const {
     for (size_t i = 0; i < stock.size(); ++i) {
-        if (stock[i].getPartID() == partID) {
+        if (stock[i].getID() == partID) {
             return static_cast<int>(i);
         }
     }
@@ -332,7 +329,7 @@ int GarageManager::findPartIndex(string partID) const {
 std::vector<int> GarageManager::findPartIndicesByName(std::string partName) const {
     std::vector<int> indices;
     for (size_t i = 0; i < stock.size(); ++i) {
-        if (stock[i].getPartName() == partName) {
+        if (stock[i].getName() == partName) {
             indices.push_back(static_cast<int>(i));
         }
     }

@@ -4,11 +4,12 @@
 #include <vector>
 #include <string>
 #include "Part.h"
+using namespace std;
 
 class GarageManager {
 private:
-    //Vector to store Part objects
-    std::vector<Part> stock;
+    //Vector to store objects
+    vector<Part> stock;
 
 public:
     //Add a part to stock
@@ -18,7 +19,7 @@ public:
     void searchPart();
 
     // Update stock quantity
-    void updateStock(std::string partID, int quantityUsed);
+    void updateStock(string partID, int quantityUsed);
 
     // Generate orders report
     void generateOrders();
@@ -30,9 +31,9 @@ public:
     void processDelivery();
 
     // function to find a part by ID
-    int findPartIndex(std::string partID) const;
+    int findPartIndex(string partID) const;
 
     // function to find parts by name
-    std::vector<int> findPartIndicesByName(std::string partName) const;
+    std::vector<int> findPartIndicesByName(string partName) const;
 };
 #endif
