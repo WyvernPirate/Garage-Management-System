@@ -4,30 +4,28 @@ using namespace std;
 // Constructor 
 Part::Part(string id, string name, int quantity, double price)
     : partID(id), partName(name), quantityInStock(quantity), unitPrice(price) {}
-
-// getters 
-string Part::getPartID() const {
-    return partID;
-}
-string Part::getPartName() const {
-    return partName;
-}
-int Part::getQuantityInStock() const {
-    return quantityInStock;
-}
-double Part::getUnitPrice() const {
-    return unitPrice;
-}
-
 //setters
-void Part::setPartName(string name) {
+void Part::setName(string name) {
     partName = name;
 }
-void Part::setQuantityInStock(int quantity) {
+void Part::setQuantity(int quantity) {
     quantityInStock = quantity;
 }
-void Part::setUnitPrice(double price) {
+void Part::setPrice(double price) {
     unitPrice = price;
+}
+// getters 
+string Part::getID() const {
+    return partID;
+}
+string Part::getName() const {
+    return partName;
+}
+int Part::getQuantity() const {
+    return quantityInStock;
+}
+double Part::getPrice() const {
+    return unitPrice;
 }
 
 // Method to display part details implementation
